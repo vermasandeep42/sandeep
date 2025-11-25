@@ -1,4 +1,21 @@
 """
+Django settings for matrimony_project project.
+"""
+
+from pathlib import Path
+import os
+
+# Vercel SQLite workaround
+try:
+    __import__('pysqlite3')
+    import sys
+    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+except ImportError:
+    pass
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-x^v7f&2h7z267w=ls^zsy+mjq&!r)hzx^bp&hf3c9tyl&mpss5'
 
