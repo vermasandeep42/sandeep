@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 style="margin-bottom: 1.5rem;">Suggested Matches</h2>
+
+{% if matches %}
+<div class="grid grid-cols-3">
+    {% for profile in matches %}
+    <div class="card">
+        {% if profile.photo %}
+        <img src="{{ profile.photo.url }}" alt="{{ profile.user.username }}" class="profile-img">
+        {% else %}
+        <div class="profile-img"
+            style="background-color: #e2e8f0; display: flex; align-items: center; justify-content: center;">
+            No Photo
+        </div>
+        {% endif %}
+        <h3 style="margin: 1rem 0 0.5rem;">{{ profile.user.username }}</h3>
+        <p style="color: var(--text-muted); margin-bottom: 0.5rem;">
+            {{ profile.age }} yrs • {{ profile.get_gender_display }}
+        </p>
+        <p style="margin-bottom: 1rem;">{{ profile.profession }} in {{ profile.location }}</p>
+        <div style="display: flex; gap: 0.5rem;">
+            <a href="{% url 'profile_detail' profile.pk %}" class="btn btn-outline"
+                style="flex: 1; text-align: center;">View</a>
+            <a href="{% url 'send_interest' profile.user.id %}" class="btn btn-primary"
+                style="flex: 1; text-align: center;">Connect</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>No matches found at the moment. Try updating your profile or check back later.</p>
+{% endif %}
+{% endblock %}

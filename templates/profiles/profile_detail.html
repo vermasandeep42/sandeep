@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 0 auto;">
+    <div class="card">
+        <div style="display: flex; gap: 2rem; align-items: start;">
+            <div style="flex: 1;">
+                {% if profile.photo %}
+                <img src="{{ profile.photo.url }}" alt="{{ profile.user.username }}" class="profile-img"
+                    style="height: 300px;">
+                {% else %}
+                <div class="profile-img"
+                    style="height: 300px; background-color: #e2e8f0; display: flex; align-items: center; justify-content: center;">
+                    No Photo
+                </div>
+                {% endif %}
+            </div>
+            <div style="flex: 2;">
+                <h2 style="margin-top: 0;">{{ profile.user.username }}</h2>
+                <p style="font-size: 1.25rem; color: var(--text-muted);">
+                    {{ profile.age }} years old • {{ profile.get_gender_display }}
+                </p>
+
+                <div style="margin: 1.5rem 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div><strong>Location:</strong> {{ profile.location }}</div>
+                    <div><strong>Profession:</strong> {{ profile.profession }}</div>
+                    <div><strong>Education:</strong> {{ profile.education }}</div>
+                    <div><strong>Religion:</strong> {{ profile.religion }}</div>
+                    <div><strong>Caste:</strong> {{ profile.caste }}</div>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <strong>About Me:</strong>
+                    <p>{{ profile.bio }}</p>
+                </div>
+
+                {% if connection %}
+                {% if connection.status == 'accepted' %}
+                <a href="{% url 'chat_view' profile.user.id %}" class="btn btn-primary">Message</a>
+                {% elif connection.status == 'pending' %}
+                <button class="btn btn-outline" disabled>Request Pending</button>
+                {% endif %}
+                {% else %}
+                <a href="{% url 'send_interest' profile.user.id %}" class="btn btn-primary">Send Interest</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

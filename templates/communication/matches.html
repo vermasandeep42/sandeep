@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 style="margin-bottom: 1.5rem;">Your Matches</h2>
+
+<div class="grid grid-cols-3">
+    {% for user in matches %}
+    <div class="card">
+        <h3 style="margin: 0 0 0.5rem;">{{ user.username }}</h3>
+        <p style="color: var(--text-muted); margin-bottom: 1rem;">Connected</p>
+        <a href="{% url 'chat_view' user.id %}" class="btn btn-primary"
+            style="display: block; text-align: center;">Chat</a>
+    </div>
+    {% empty %}
+    <p>No matches yet.</p>
+    {% endfor %}
+</div>
+
+{% if pending_requests %}
+<h3 style="margin: 2rem 0 1rem;">Pending Requests</h3>
+<div class="grid grid-cols-3">
+    {% for req in pending_requests %}
+    <div class="card">
+        <h3 style="margin: 0 0 0.5rem;">{{ req.sender.username }}</h3>
+        <p style="margin-bottom: 1rem;">Wants to connect</p>
+        <!-- In a real app, add Accept/Reject buttons here -->
+        <button class="btn btn-outline" disabled>Pending</button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

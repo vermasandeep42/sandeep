@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 style="margin-bottom: 1.5rem;">Search Profiles</h2>
+
+<form method="get" class="card" style="margin-bottom: 2rem; display: flex; gap: 1rem;">
+    <input type="text" name="q" placeholder="Search by location, profession, religion..." class="form-control"
+        value="{{ request.GET.q }}">
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+{% if profiles %}
+<div class="grid grid-cols-3">
+    {% for profile in profiles %}
+    <div class="card">
+        {% if profile.photo %}
+        <img src="{{ profile.photo.url }}" alt="{{ profile.user.username }}" class="profile-img">
+        {% else %}
+        <div class="profile-img"
+            style="background-color: #e2e8f0; display: flex; align-items: center; justify-content: center;">
+            No Photo
+        </div>
+        {% endif %}
+        <h3 style="margin: 1rem 0 0.5rem;">{{ profile.user.username }}</h3>
+        <p style="color: var(--text-muted); margin-bottom: 0.5rem;">
+            {{ profile.age }} yrs • {{ profile.get_gender_display }}
+        </p>
+        <p style="margin-bottom: 1rem;">{{ profile.profession }} in {{ profile.location }}</p>
+        <div style="display: flex; gap: 0.5rem;">
+            <a href="{% url 'profile_detail' profile.pk %}" class="btn btn-outline"
+                style="flex: 1; text-align: center;">View</a>
+            <a href="{% url 'send_interest' profile.user.id %}" class="btn btn-primary"
+                style="flex: 1; text-align: center;">Connect</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% elif request.GET.q %}
+<p>No profiles found matching your criteria.</p>
+{% endif %}
+{% endblock %}
